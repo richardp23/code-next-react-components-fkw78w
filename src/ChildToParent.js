@@ -24,11 +24,16 @@ const NOOP = () => {
 const TodoList = () => {
   const [todos, setTodos] = useState(INITIAL_TODOS);
 
+  const onDone = (id) => {
+    const nextTodos = [...todos].filter((todo) => todo.id !== id);
+    setTodos(nextTodos);
+  }
+
   return (
     <ul className="list-group">
       {todos.map((todo) => (
         <li className="list-group-item">
-          <TodoListItem key={todo.id} todo={todo} />
+          <TodoListItem key={todo.id} todo={todo} onDone={onDone}/>
         </li>
       ))}
     </ul>
@@ -38,10 +43,15 @@ const TodoList = () => {
 // TODO: Update this component to call the onClick prop with a todo object.
 const TodoListItem = (props) => {
   const todo = props.todo;
+  const onDone = props.onDone;
+
+  const onClick = () => {
+    onDone(todo.id);
+  }
 
   return (
     <div className="d-flex justify-content-between">
-      {todo.text} <button className="btn btn-primary btn-sm">done</button> 
+      {todo.text} <button className="btn btn-primary btn-sm" onClick={onClick}>done</button>
     </div>
   );
 };
